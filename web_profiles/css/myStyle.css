@@ -1,0 +1,27 @@
+/* Change the color of at least two elements */
+h1 {
+    color: blue;
+}
+
+p {
+    color: green;
+}
+
+/* Change the font properties of at least two elements */
+h1 {
+    font-family: 'Arial', sans-serif;
+    font-size: 36px;
+    font-weight: bold;
+}
+
+p {
+    font-family: 'Times New Roman', serif;
+    font-size: 18px;
+    font-style: italic;
+}
+
+/* Change at least one other thing of your choosing */
+body {
+    background-color: #f0f0f0;
+    text-align: center;
+}
