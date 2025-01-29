@@ -1,0 +1,40 @@
+/* Change the background color of the web page to black */
+body {
+    background-color: black;
+    color: white; /* Change the text color of the web page to white */
+}
+
+/* Change the font of the largest heading to “Georgia” */
+h1 {
+    font-family: 'Georgia', serif;
+}
+
+/* Change the font of the list items to “Helvetica” */
+li {
+    font-family: 'Helvetica', sans-serif;
+}
+
+/* Create a class called “artist” to the spotlight artist image using a 1 pixel solid red line for the border */
+.artist {
+    border: 1px solid red;
+    padding: 5px; /* Retain the padding for the artist image */
+}
+
+/* Create a class called “spotlight” that styles a div element for the spotlight artist */
+.spotlight {
+    padding: 10px;
+    border: 3px dotted yellow;
+    width: 300px;
+    text-align: center;
+}
+
+/* Add at least two other CSS properties not already given to you */
+/* Change the font size of paragraphs */
+p {
+    font-size: 16px;
+}
+
+/* Add a margin to the top of the headings */
+h1, h2 {
+    margin-top: 20px;
+}
