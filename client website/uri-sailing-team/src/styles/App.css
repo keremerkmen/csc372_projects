@@ -1,0 +1,193 @@
+body {
+  margin: 0;
+  background-color: #f0f0f0; /* Light grey background for better readability */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 2em;
+  color: #003DA5; /* Keaney Blue for headings */
+}
+
+h2 {
+  font-size: 1.5em;
+  color: #003DA5; /* Keaney Blue for headings */
+}
+
+p {
+  color: #002147; /* Dark Blue for paragraphs */
+  font-size: 1em;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+/* ==========================
+   App-Specific Styles (Originally from App.css)
+   ========================== */
+
+/* 
+  1) Make header span full width
+  2) Keep .container inside header at max-width: 80% for centering
+*/
+header {
+  width: 100%;               /* Ensures the blue bar spans full width */
+  background-color: #003DA5; /* URI Blue */
+  color: white;
+  padding: 10px 0;
+}
+
+header .container {
+  max-width: 80%;
+  margin: 20px auto; /* Add margin from the top */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header .logo {
+  height: 120px; /* Increase the height to make the logo bigger */
+  margin-left: 20px; /* Move the logo more to the right */
+}
+
+header nav {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+}
+
+header nav ul {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+  margin: 0;
+  padding: 0;
+}
+
+header nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.2em;
+  letter-spacing: 0.1em;
+}
+
+header nav ul li a:hover {
+  text-decoration: underline;
+}
+
+/* 
+  Hero section can also be full width.
+  If you want the text to be centered within 80%, 
+  you can nest a .container inside if needed.
+*/
+.hero {
+  width: 100%;               /* Full width background */
+  background-size: cover;
+  background-position: center;
+  color: white;
+  text-align: center;
+  padding: 100px 20px;
+}
+
+.hero h1 {
+  font-size: 3em;
+  margin: 0;
+}
+
+.hero p {
+  font-size: 1.5em;
+}
+
+/* 
+  Generic container for main content 
+  (100% width, no margin)
+*/
+.container {
+  max-width: 100%; /* Ensure container spans full width */
+  margin: 0;       /* Remove auto margin */
+  padding: 0 20px; /* Add padding to the left and right */
+}
+
+/* 
+  Schedule container styling
+*/
+#schedule-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.schedule-box {
+  background-color: #ffffff;
+  border: 1px solid #003DA5;
+  border-radius: 5px;
+  padding: 20px;
+  width: calc(33.333% - 20px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.schedule-box h3 {
+  margin-top: 0;
+  color: #003DA5;
+}
+
+.schedule-box p {
+  color: #002147;
+}
+
+/* 
+  1) Make footer span full width
+  2) Ensure text is visible (white on blue)
+*/
+footer {
+  width: 100%;
+  background-color: #003DA5;
+  padding: 10px 0;
+  text-align: center;
+  color: #ffffff !important; /* Ensure footer text is white */
+  margin: 0; /* Remove any margin */
+  position: relative; /* Ensure the footer is positioned correctly */
+  bottom: 0; /* Stick the footer to the bottom */
+}
+
+footer p {
+  color: #ffffff !important; /* Ensure footer text is white */
+}
+
+footer a {
+  color: #FFCC00 !important; /* Contrasting color for links */
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* Add margin to the About Us section */
+.about-us {
+  margin: 20px 0; /* Small margin at the top and bottom */
+}
+
+/* Add margin to the main content section */
+.main-content {
+  margin: 20px 0; /* Small margin at the top and bottom */
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+main {
+  flex-grow: 1;
+}
