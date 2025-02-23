@@ -1,22 +1,27 @@
 // src/pages/Contact.js
 import React, { useEffect } from "react";
-import $ from "jquery"; // Make sure jQuery is available
+import $ from "jquery"; // Ensure jQuery is available
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "../styles/App.css";
 
 function Contact() {
   useEffect(() => {
-    // Cache the container element using jQuery
-    const $container = $(".container");
-    
-    // Use a fadeIn effect for a smooth transition on load with a callback
-    $container.hide().fadeIn(1000, function () {
-      console.log("FadeIn effect on Contact page completed.");
-    });
-    
-    // Dynamically update CSS for the container (example: change background color)
-    $container.css("background-color", "#f8f8f8");
+    // Select only the <main> element with the class "container"
+    const $mainContainer = $("main.container");
+
+    if ($mainContainer.length) {
+      // Hide the main container and fade it in over 1 second,
+      // then log a confirmation message in the console
+      $mainContainer.hide().fadeIn(1000, function () {
+        console.log("FadeIn effect on Contact page completed.");
+      });
+      
+      // Dynamically update the background color for the main container
+      $mainContainer.css("background-color", "#f8f8f8");
+    } else {
+      console.warn("No main container found in Contact page.");
+    }
   }, []);
 
   return (

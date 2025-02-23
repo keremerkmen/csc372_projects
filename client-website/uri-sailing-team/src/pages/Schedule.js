@@ -1,7 +1,9 @@
 // src/pages/Schedule.js
 import React, { useEffect, useState } from "react";
+import $ from "jquery";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 import "../styles/App.css";
-import logo from "../assets/images/logo.png";
 
 const Schedule = () => {
   const [schedule, setSchedule] = useState([]);
@@ -15,28 +17,24 @@ const Schedule = () => {
       { date: "May 20, 2025", event: "National Championships" },
     ];
     setSchedule(scheduleEvents);
+
+    // jQuery: Apply fadeIn effect to the schedule container
+    $("#schedule-container").hide().fadeIn(2000, function () {
+      console.log("Schedule container fadeIn completed.");
+    });
+
+    // jQuery: Attach event delegation to schedule boxes for a visual toggle effect
+    $("#schedule-container").on("click", ".schedule-box", function () {
+      $(this).toggleClass("highlighted");
+    });
+
+    // Example: Optionally modify header styling using jQuery
+    $("header").css("background-color", "#003DA5");
   }, []);
 
   return (
-    <div id="root">
-      {/* HEADER */}
-      <header>
-        <div className="container">
-          <img src={logo} alt="URI Sailing Team Logo" className="logo" />
-          <nav>
-            <ul>
-              <li><a href="/">Home</a></li>
-              <li><a href="/about">About Us</a></li>
-              <li><a href="/roster">Our Team</a></li>
-              <li><a href="/recruitment">Recruitment</a></li>
-              <li><a href="/contact">Contact</a></li>
-              <li><a href="/schedule">Schedule</a></li>
-            </ul>
-          </nav>
-        </div>
-      </header>
-
-      {/* MAIN: Full Sailing Schedule */}
+    <>
+      <Header />
       <main>
         <section id="schedule-page" className="container">
           <h2>Full Sailing Schedule</h2>
@@ -50,19 +48,8 @@ const Schedule = () => {
           </div>
         </section>
       </main>
-
-      {/* FOOTER */}
-      <footer className="container">
-        <h2>Contact Us</h2>
-        <p>Email: sailing@uri.edu</p>
-        <p>Phone: (401) 874-1000</p>
-        <p>Author: Kerem Erkmen</p>
-        <p>
-          Email: <a href="mailto:kerem@uri.edu">kerem@uri.edu</a>
-        </p>
-        <p>&copy; 2025 URI Sailing Team. All rights reserved.</p>
-      </footer>
-    </div>
+      <Footer />
+    </>
   );
 };
 
