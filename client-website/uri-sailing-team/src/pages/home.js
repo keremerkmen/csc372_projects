@@ -1,5 +1,6 @@
 // src/pages/Home.js
 import React, { useState, useEffect } from "react";
+import $ from "jquery"; // Import jQuery (make sure it's loaded via npm or globally from CDN)
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "../styles/App.css";
@@ -17,6 +18,20 @@ function Home() {
       { date: "May 20, 2025", event: "National Championships" },
     ];
     setSchedule(scheduleEvents);
+
+    // jQuery: Cache the hero section and update its CSS dynamically
+    const $hero = $("#hero");
+    $hero.css("background-color", "#e0f7fa");
+
+    // jQuery: Apply a fade-in effect to the schedule container with a callback
+    $("#schedule-container").hide().fadeIn(2000, function () {
+      console.log("FadeIn effect for schedule container completed.");
+    });
+
+    // jQuery: Attach event delegation on schedule boxes to toggle a class when clicked
+    $("#schedule-container").on("click", ".schedule-box", function () {
+      $(this).toggleClass("highlighted");
+    });
   }, []);
 
   return (
@@ -45,7 +60,9 @@ function Home() {
               </div>
             ))}
           </div>
-          <p><a href="/schedule">See full schedule</a></p>
+          <p>
+            <a href="/schedule">See full schedule</a>
+          </p>
         </section>
       </main>
       <Footer />

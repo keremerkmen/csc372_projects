@@ -1,10 +1,30 @@
 // src/pages/Recruitment.js
-import React from "react";
+import React, { useEffect } from "react";
+import $ from "jquery"; // Import jQuery
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "../styles/App.css";
 
 const Recruitment = () => {
+  useEffect(() => {
+    // jQuery: Cache the main container element
+    const $container = $(".container");
+    
+    // jQuery: Apply a fade-in effect to the main container with a callback
+    $container.hide().fadeIn(1500, function () {
+      console.log("Recruitment page fadeIn effect completed.");
+    });
+    
+    // jQuery: Modify CSS dynamically - e.g., update text color for better visibility
+    $container.css("color", "#003DA5");
+    
+    // jQuery: Attach an event listener to any recruitment-specific element if needed
+    // For demonstration, when any paragraph is clicked, toggle a border.
+    $container.on("click", "p", function () {
+      $(this).toggleClass("clicked-border");
+    });
+  }, []);
+
   return (
     <>
       <Header />
