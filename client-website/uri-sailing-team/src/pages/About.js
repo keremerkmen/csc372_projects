@@ -1,10 +1,24 @@
 // src/pages/About.js
-import React from "react";
+import React, { useEffect } from "react";
+import $ from "jquery"; // Ensure jQuery is loaded (either via npm or via the CDN fallback in index.html)
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "../styles/App.css";
 
 function About() {
+  useEffect(() => {
+    // Cache the container element using jQuery for improved performance
+    const $container = $(".container");
+    
+    // Apply a fadeIn effect to the container with a callback
+    $container.hide().fadeIn(1000, function () {
+      console.log("FadeIn effect on About page completed.");
+    });
+    
+    // Dynamically update the container's CSS using jQuery
+    $container.css("border", "2px solid #003DA5");
+  }, []);
+
   return (
     <>
       <Header />
