@@ -21,14 +21,20 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     
-    <!-- Load full jQuery (minified) from the CDN without integrity attribute -->
+    <!-- Load jQuery from CDN -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     
-    <!-- Fallback: if CDN fails, load local jQuery from public/js/ -->
+    <!-- Fallback to local jQuery if CDN fails -->
     <script>
       if (typeof jQuery === "undefined") {
         document.write('<script src="%PUBLIC_URL%/js/jquery-3.7.1.min.js"><\/script>');
       }
     </script>
+    
+    <!-- Load external scripts for AJAX -->
+    <script src="%PUBLIC_URL%/js/loadHTML.js"></script>
+    <script src="%PUBLIC_URL%/js/loadJSON.js"></script>
+    <script src="%PUBLIC_URL%/js/loadXML.js"></script>
+    <script src="%PUBLIC_URL%/js/loadJQueryHTML.js"></script>
   </body>
 </html>
