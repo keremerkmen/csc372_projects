@@ -35,25 +35,27 @@ function Roster() {
           <li>Team Member: Maria Rodriguez (Freshman)</li>
         </ul>
 
-        {/* Button for HTML Ajax */}
+        {/* Button for HTML Ajax (unchanged) */}
         <button onClick={() => window.loadHTML && window.loadHTML()}>
           Load Roster via HTML
         </button>
         <div id="ajaxRosterContainer"></div>
 
-        {/* Button for JSON Ajax */}
-        <button onClick={() => window.loadJSON && window.loadJSON()}>
-          Load Roster via JSON
-        </button>
+        {/* 
+          Button for JSON Ajax: 
+          Instead of onClick calling window.loadJSON, 
+          we give it an id="loadJSONBtn" and let the external script handle the click event.
+        */}
+        <button id="loadJSONBtn">Load Roster via JSON</button>
         <div id="jsonContainer"></div>
 
-        {/* Button for XML Ajax */}
+        {/* Button for XML Ajax (unchanged) */}
         <button onClick={() => window.loadXML && window.loadXML()}>
           Load Roster via XML
         </button>
         <div id="xmlContainer"></div>
 
-        {/* Button for jQuery Ajax */}
+        {/* Button for jQuery Ajax (unchanged) */}
         <button id="showJQueryRosterBtn">
           Load Roster via jQuery
         </button>

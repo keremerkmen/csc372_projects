@@ -1,11 +1,11 @@
 // public/js/loadJSON.js
 
 document.addEventListener('DOMContentLoaded', function() {
-  // 1. Find the button in the HTML (or React-rendered DOM)
+  // 1. Find the button in the DOM (could be rendered by React)
   var myBtn = document.getElementById('loadJSONBtn');
   
   if (myBtn) {
-    // 2. Add a click event listener that calls makeRequest
+    // 2. Attach a click event listener that calls makeRequest when clicked
     myBtn.addEventListener('click', makeRequest, false);
   } else {
     console.error("Button with id 'loadJSONBtn' not found");
@@ -15,24 +15,26 @@ document.addEventListener('DOMContentLoaded', function() {
   function makeRequest() {
     var xhr = new XMLHttpRequest();
     
-    // 4. Use onreadystatechange (check if request is complete and successful)
+    // 4. Use onreadystatechange to monitor the request's progress
     xhr.onreadystatechange = function() {
       console.log('xhr.readyState:', xhr.readyState, 'xhr.status:', xhr.status);
       
+      // Check if the request is complete
       if (xhr.readyState === 4) {
+        // Check for a successful response
         if (xhr.status === 200) {
           try {
-            // 5. Parse the JSON data
+            // 5. Parse the JSON response
             var data = JSON.parse(xhr.responseText);
             
-            // 6. Build new HTML content
+            // 6. Build new HTML content from the JSON data
             var newContent = '<h2>' + data.title + '</h2><ul>';
             data.members.forEach(function(member) {
               newContent += '<li>' + member.name + ' - ' + member.role + '</li>';
             });
             newContent += '</ul>';
   
-            // 7. Insert the HTML into the page
+            // 7. Insert the HTML into the target container
             var container = document.getElementById('jsonContainer');
             if (container) {
               container.innerHTML = newContent;
@@ -48,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     };
 
-    // 8. Prepare and send the request
+    // 8. Open a GET request to 'roster.json' asynchronously, then send it
     xhr.open('GET', 'roster.json', true);
     xhr.send();
   }
