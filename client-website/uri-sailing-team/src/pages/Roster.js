@@ -1,22 +1,19 @@
 // src/pages/Roster.js
 import React, { useEffect } from "react";
-import $ from "jquery"; // Ensure jQuery is available (via npm or globally)
+import $ from "jquery";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "../styles/App.css";
 
 function Roster() {
   useEffect(() => {
-    // Cache the container element for performance
+    // Fade in the container
     const $container = $(".container");
-
-    // Apply a fadeIn effect to the container with a callback
-    $container.hide().fadeIn(1000, function () {
+    $container.hide().fadeIn(1000, () => {
       console.log("Roster container fadeIn completed.");
     });
 
-    // Attach a click event to list items to toggle a 'highlighted' class
-    // This demonstrates replacing native event attachment with jQuery's .on() method.
+    // Toggle a "highlighted" class on list items when clicked
     $("ul li").on("click", function () {
       $(this).toggleClass("highlighted");
     });
@@ -37,6 +34,30 @@ function Roster() {
           <li>Team Member: Alex Johnson (Sophomore)</li>
           <li>Team Member: Maria Rodriguez (Freshman)</li>
         </ul>
+
+        {/* Button for HTML Ajax */}
+        <button onClick={() => window.loadHTML && window.loadHTML()}>
+          Load Roster via HTML
+        </button>
+        <div id="ajaxRosterContainer"></div>
+
+        {/* Button for JSON Ajax */}
+        <button onClick={() => window.loadJSON && window.loadJSON()}>
+          Load Roster via JSON
+        </button>
+        <div id="jsonContainer"></div>
+
+        {/* Button for XML Ajax */}
+        <button onClick={() => window.loadXML && window.loadXML()}>
+          Load Roster via XML
+        </button>
+        <div id="xmlContainer"></div>
+
+        {/* Button for jQuery Ajax */}
+        <button id="showJQueryRosterBtn">
+          Load Roster via jQuery
+        </button>
+        <div id="jqueryContainer"></div>
       </main>
       <Footer />
     </>
