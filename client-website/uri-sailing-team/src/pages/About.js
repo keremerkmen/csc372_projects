@@ -1,8 +1,9 @@
 // src/pages/About.js
 import React, { useEffect } from "react";
-import $ from "jquery"; // Ensure jQuery is loaded (either via npm or via the CDN fallback in index.html)
+import $ from "jquery"; // Ensure jQuery is loaded
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import Weather from "../components/Weather"; // <-- Import Weather component
 import "../styles/App.css";
 
 function About() {
@@ -37,6 +38,9 @@ function About() {
           sailor or just curious about the sport, we welcome you to learn,
           compete, and make lasting friendships within our team!
         </p>
+        
+        {/* Render the Weather component here */}
+        <Weather />
       </main>
       <Footer />
     </>
