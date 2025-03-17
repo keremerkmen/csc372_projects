@@ -1,3 +1,16 @@
+/* Global Box-Sizing for Consistent Layout */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Prevent Horizontal Overflow */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Base Styles */
 body {
   margin: 0;
   background-color: #f0f0f0; /* Light grey background for better readability */
@@ -31,13 +44,10 @@ code {
 }
 
 /* ==========================
-   App-Specific Styles (Originally from App.css)
+   App-Specific Styles
    ========================== */
 
-/* 
-  1) Make header span full width
-  2) Keep .container inside header at max-width: 80% for centering
-*/
+/* Header Styles */
 header {
   width: 100%;               /* Ensures the blue bar spans full width */
   background-color: #003DA5; /* URI Blue */
@@ -47,7 +57,7 @@ header {
 
 header .container {
   max-width: 80%;
-  margin: 20px auto; /* Add margin from the top */
+  margin: 20px auto; /* Center the header container with margin */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -83,11 +93,7 @@ header nav ul li a:hover {
   text-decoration: underline;
 }
 
-/* 
-  Hero section can also be full width.
-  If you want the text to be centered within 80%, 
-  you can nest a .container inside if needed.
-*/
+/* Hero Section Styles */
 .hero {
   width: 100%;               /* Full width background */
   background-size: cover;
@@ -106,19 +112,14 @@ header nav ul li a:hover {
   font-size: 1.5em;
 }
 
-/* 
-  Generic container for main content 
-  (100% width, no margin)
-*/
+/* Generic Container for Main Content */
 .container {
-  max-width: 100%; /* Ensure container spans full width */
-  margin: 0;       /* Remove auto margin */
-  padding: 0 20px; /* Add padding to the left and right */
+  max-width: 100%;
+  margin: 0;
+  padding: 0 20px; /* Padding is now included in the total width due to box-sizing */
 }
 
-/* 
-  Schedule container styling
-*/
+/* Schedule Container Styling */
 #schedule-container {
   display: flex;
   flex-wrap: wrap;
@@ -144,10 +145,7 @@ header nav ul li a:hover {
   color: #002147;
 }
 
-/* 
-  1) Make footer span full width
-  2) Ensure text is visible (white on blue)
-*/
+/* Footer Styles */
 footer {
   width: 100%;
   background-color: #003DA5;
@@ -155,12 +153,12 @@ footer {
   text-align: center;
   color: #ffffff !important; /* Ensure footer text is white */
   margin: 0; /* Remove any margin */
-  position: relative; /* Ensure the footer is positioned correctly */
-  bottom: 0; /* Stick the footer to the bottom */
+  position: relative;
+  bottom: 0;
 }
 
 footer p {
-  color: #ffffff !important; /* Ensure footer text is white */
+  color: #ffffff !important;
 }
 
 footer a {
@@ -172,12 +170,11 @@ footer a:hover {
   text-decoration: underline;
 }
 
-/* Add margin to the About Us section */
+/* Section-specific Spacing */
 .about-us {
   margin: 20px 0; /* Small margin at the top and bottom */
 }
 
-/* Add margin to the main content section */
 .main-content {
   margin: 20px 0; /* Small margin at the top and bottom */
 }
@@ -190,4 +187,50 @@ footer a:hover {
 
 main {
   flex-grow: 1;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 768px) {
+  header .container {
+    flex-direction: column;
+    align-items: center;
+    padding: 0 10px;
+  }
+
+  header .logo {
+    height: 80px;
+    margin: 0 0 10px;
+  }
+
+  header nav ul {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .hero {
+    padding: 60px 10px;
+  }
+
+  .hero h1 {
+    font-size: 2em;
+  }
+
+  .hero p {
+    font-size: 1em;
+  }
+
+  .container {
+    padding: 0 10px;
+  }
+
+  .schedule-box {
+    width: calc(50% - 20px);
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .schedule-box {
+    width: 100%;
+  }
 }
