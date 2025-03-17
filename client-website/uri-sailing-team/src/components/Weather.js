@@ -29,7 +29,7 @@ function Weather() {
   // 3) The 'units=f' parameter indicates we want the temperature in Fahrenheit.
   const apiKey = 'f052528532bdef5f3cf43f247beb9e91';
   const location = '41.42745194130984,-71.4972919923618'; // "lat,lon" format for Weatherstack
-  const url = `http://api.weatherstack.com/current?access_key=${apiKey}&query=${location}&units=f`;
+  const url = `https://api.weatherstack.com/current?access_key=${apiKey}&query=${location}&units=f`;
 
   // ---------------------------------------------
   // Fetch Weather Data
