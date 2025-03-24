@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Roster | URI Sailing Team</title>
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- jQuery CDN -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      const $container = $(".container");
+      $container.hide().fadeIn(1000, function () {
+        console.log("Roster container fadeIn completed.");
+      });
+
+      $("ul li").on("click", function () {
+        $(this).toggleClass("highlighted");
+      });
+    });
+  </script>
+
+  <style>
+    .highlighted {
+      background-color: #dff0ff;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <img src="images/logo.png" alt="URI Sailing Team Logo" class="logo" />
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="roster.html">Roster</a></li>
+          <li><a href="recruitment.html">Recruitment</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="schedule.html">Schedule</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Page Content -->
+  <main class="container">
+    <h2>Meet Our Team</h2>
+    <p>
+      Our roster is composed of talented sailors from various backgrounds.
+      Each member brings unique strengths and experiences to the URI Sailing Team.
+    </p>
+    <ul>
+      <li>Captain: Jane Doe (Senior)</li>
+      <li>Co-Captain: John Smith (Junior)</li>
+      <li>Team Member: Alex Johnson (Sophomore)</li>
+      <li>Team Member: Maria Rodriguez (Freshman)</li>
+    </ul>
+  </main>
+
+  <!-- Footer -->
+  <footer class="container">
+    <h2>Contact Us</h2>
+    <p>Email: sailing@uri.edu</p>
+    <p>Phone: (401) 874-1000</p>
+    <p>Author: Kerem Erkmen</p>
+    <p>Email: <a href="mailto:kerem@uri.edu">kerem@uri.edu</a></p>
+    <p>&copy; 2025 URI Sailing Team. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
