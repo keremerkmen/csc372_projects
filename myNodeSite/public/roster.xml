@@ -1,0 +1,14 @@
+<team>
+  <member>
+    <name>John Smith</name>
+    <role>Captain</role>
+  </member>
+  <member>
+    <name>Jane Doe</name>
+    <role>Crew</role>
+  </member>
+  <member>
+    <name>Max Johnson</name>
+    <role>Crew</role>
+  </member>
+</team>
