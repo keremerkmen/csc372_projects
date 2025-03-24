@@ -6,28 +6,29 @@
   <title>Roster | URI Sailing Team</title>
   <link rel="stylesheet" href="css/style.css" />
 
-  <!-- jQuery CDN -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-  <script>
-    $(document).ready(function () {
-      const $container = $(".container");
-      $container.hide().fadeIn(1000, function () {
-        console.log("Roster container fadeIn completed.");
-      });
-
-      $("ul li").on("click", function () {
-        $(this).toggleClass("highlighted");
-      });
-    });
-  </script>
-
   <style>
     .highlighted {
       background-color: #dff0ff;
       font-weight: bold;
     }
   </style>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const container = document.querySelector(".container");
+      container.style.opacity = 0;
+      container.style.transition = "opacity 1s";
+      requestAnimationFrame(() => {
+        container.style.opacity = 1;
+      });
+
+      document.querySelectorAll("ul li").forEach(item => {
+        item.addEventListener("click", () => {
+          item.classList.toggle("highlighted");
+        });
+      });
+    });
+  </script>
 </head>
 <body>
 
@@ -55,20 +56,7 @@
       Our roster is composed of talented sailors from various backgrounds.
       Each member brings unique strengths and experiences to the URI Sailing Team.
     </p>
-  
-    <h3>Click to Load Roster via Different Formats:</h3>
-    <button onclick="loadHTML()">Load Roster via HTML</button>
-    <div id="ajaxRosterContainer"></div>
-  
-    <button onclick="loadJSON()">Load Roster via JSON</button>
-    <div id="jsonContainer"></div>
-  
-    <button onclick="loadXML()">Load Roster via XML</button>
-    <div id="xmlContainer"></div>
-  
-    <button onclick="loadJQueryHTML()">Load Roster via jQuery</button>
-    <div id="jqueryContainer"></div>
-  
+
     <ul>
       <li>Captain: Jane Doe (Senior)</li>
       <li>Co-Captain: John Smith (Junior)</li>
