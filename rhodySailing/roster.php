@@ -67,7 +67,7 @@ $team = [$sailor1, $sailor2, $sailor3, $sailor4];
           <li><a href="about.html">About Us</a></li>
           <li><a href="roster.php">Roster</a></li>
           <li><a href="recruitment.html">Recruitment</a></li>
-          <li><a href="contact.html">Contact</a></li>
+          <li><a href="contact.php">Contact</a></li>
           <li><a href="schedule.html">Schedule</a></li>
         </ul>
       </nav>
