@@ -52,7 +52,10 @@ $sailors = $stmt->fetchAll();
           <th>Name</th>
           <th>Class</th>
           <th>Hometown</th>
-          <th>Position / Event</th>
+          <th>Position</th>
+          <th>Event</th>
+          <th>Height</th>
+          <th>Weight</th>
         </tr>
       </thead>
       <tbody>
@@ -65,14 +68,14 @@ $sailors = $stmt->fetchAll();
               <td><?= htmlspecialchars($sailor['first_name'] . ' ' . $sailor['last_name']) ?></td>
               <td><?= htmlspecialchars($sailor['grade']) ?></td>
               <td><?= htmlspecialchars($sailor['hometown']) ?></td>
-              <td>
-                <?= htmlspecialchars($sailor['position']) ?><br>
-                <small><em><?= htmlspecialchars($sailor['event_name'] ?? 'No Event Assigned') ?></em></small>
-              </td>
+              <td><?= htmlspecialchars($sailor['position']) ?></td>
+              <td><em><?= htmlspecialchars($sailor['event_name'] ?? 'No Event Assigned') ?></em></td>
+              <td><?= htmlspecialchars($sailor['height']) ?></td>
+              <td><?= htmlspecialchars($sailor['weight']) ?> lbs</td>
             </tr>
           <?php endforeach; ?>
         <?php else: ?>
-          <tr><td colspan="5">No sailors found.</td></tr>
+          <tr><td colspan="8">No sailors found.</td></tr>
         <?php endif; ?>
       </tbody>
     </table>
