@@ -2,50 +2,16 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Define the Sailor class
-class Sailor {
-  protected $name;
-  protected $year;
-  protected $hometown;
-  protected $position;
-  protected $imagePath;
+// Connect to database
+include 'dbconnect.php';
 
-  public function __construct($name, $year, $hometown, $position, $imagePath) {
-    $this->name = $name;
-    $this->year = $year;
-    $this->hometown = $hometown;
-    $this->position = $position;
-    $this->imagePath = $imagePath;
-  }
-
-  public function getName() {
-    return $this->name;
-  }
-
-  public function getYear() {
-    return $this->year;
-  }
-
-  public function getHometown() {
-    return $this->hometown;
-  }
-
-  public function getPosition() {
-    return $this->position;
-  }
-
-  public function getImagePath() {
-    return $this->imagePath;
-  }
-}
-
-// Create team member objects
-$sailor1 = new Sailor("Jane Doe", "Senior", "Newport, RI", "Captain", "images/roster/images.jpg");
-$sailor2 = new Sailor("John Smith", "Junior", "Providence, RI", "Co-Captain", "images/roster/john.jpg");
-$sailor3 = new Sailor("Alex Johnson", "Sophomore", "Warwick, RI", "Team Member", "images/roster/alex.jpg");
-$sailor4 = new Sailor("Maria Rodriguez", "Freshman", "Cranston, RI", "Team Member", "images/roster/maria.jpg");
-
-$team = [$sailor1, $sailor2, $sailor3, $sailor4];
+// Updated SQL to include event names
+$sql = "SELECT r.*, e.event_name 
+        FROM roster r
+        LEFT JOIN events e ON r.event_id = e.event_id
+        ORDER BY r.grade DESC, r.last_name ASC";
+$stmt = $pdo->query($sql);
+$sailors = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -86,19 +52,28 @@ $team = [$sailor1, $sailor2, $sailor3, $sailor4];
           <th>Name</th>
           <th>Class</th>
           <th>Hometown</th>
-          <th>Position</th>
+          <th>Position / Event</th>
         </tr>
       </thead>
       <tbody>
-        <?php foreach ($team as $sailor): ?>
-          <tr>
-            <td><img src="<?php echo $sailor->getImagePath(); ?>" alt="Headshot of <?php echo $sailor->getName(); ?>" class="headshot"></td>
-            <td><?php echo $sailor->getName(); ?></td>
-            <td><?php echo $sailor->getYear(); ?></td>
-            <td><?php echo $sailor->getHometown(); ?></td>
-            <td><?php echo $sailor->getPosition(); ?></td>
-          </tr>
-        <?php endforeach; ?>
+        <?php if ($sailors): ?>
+          <?php foreach ($sailors as $sailor): ?>
+            <tr>
+              <td>
+                <img src="images/roster/default.jpg" alt="Headshot of <?= htmlspecialchars($sailor['first_name'] . ' ' . $sailor['last_name']) ?>" class="headshot">
+              </td>
+              <td><?= htmlspecialchars($sailor['first_name'] . ' ' . $sailor['last_name']) ?></td>
+              <td><?= htmlspecialchars($sailor['grade']) ?></td>
+              <td><?= htmlspecialchars($sailor['hometown']) ?></td>
+              <td>
+                <?= htmlspecialchars($sailor['position']) ?><br>
+                <small><em><?= htmlspecialchars($sailor['event_name'] ?? 'No Event Assigned') ?></em></small>
+              </td>
+            </tr>
+          <?php endforeach; ?>
+        <?php else: ?>
+          <tr><td colspan="5">No sailors found.</td></tr>
+        <?php endif; ?>
       </tbody>
     </table>
   </main>
