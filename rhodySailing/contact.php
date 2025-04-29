@@ -1,58 +1,70 @@
 <?php
-// Start the session and any other header-related functions
 session_start();
+include 'includes/validation.php';
 
-// Function definitions (you can define your validation functions here)
-function checkTextLength($input, $min, $max) {
-    return (strlen($input) >= $min && strlen($input) <= $max);
+// ─────────────────────────────────────────────────
+// 1) Define a simple Inquiry class
+class Inquiry {
+    private string $name;
+    private string $age;
+    private string $gender;
+
+    public function __construct(string $name, string $age, string $gender) {
+        $this->name   = trim($name);
+        $this->age    = trim($age);
+        $this->gender = trim($gender);
+    }
+
+    public function getName(): string   { return $this->name; }
+    public function getAge(): string    { return $this->age; }
+    public function getGender(): string { return $this->gender; }
 }
 
-function checkNumberRange($input, $min, $max) {
-    return (is_numeric($input) && $input >= $min && $input <= $max);
-}
+// 2) Instantiate two sample inquiries
+$sample1 = new Inquiry('Alice Smith', '21', 'Female');
+$sample2 = new Inquiry('Bob Jones',  '22', 'Male');
 
-function validateOption($input, $validOptions) {
-    return in_array($input, $validOptions);
-}
+// ─────────────────────────────────────────────────
+// 3) Form processing
+$message    = "";
+$formData   = ['name'=>'', 'age'=>'', 'gender'=>''];
+$formErrors = ['name'=>'', 'age'=>'', 'gender'=>''];
+$success    = false;
 
-// Initialize variables
-$message = "";
-$formData = array('name' => '', 'age' => '', 'gender' => '');
-$formErrors = array('name' => '', 'age' => '', 'gender' => '');
-
-// Process form when submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $formData['name'] = trim($_POST['name'] ?? '');
-    $formData['age'] = trim($_POST['age'] ?? '');
+// Populate on POST
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $formData['name']   = trim($_POST['name']   ?? '');
+    $formData['age']    = trim($_POST['age']    ?? '');
     $formData['gender'] = trim($_POST['gender'] ?? '');
 
+    // Validate each field
     if (!checkTextLength($formData['name'], 2, 50)) {
         $formErrors['name'] = "Name must be between 2 and 50 characters.";
     }
     if (!checkNumberRange($formData['age'], 1, 120)) {
         $formErrors['age'] = "Age must be a number between 1 and 120.";
     }
-    if (!validateOption($formData['gender'], array("Male", "Female"))) {
-        $formErrors['gender'] = "Please select a valid gender option.";
+    if (!validateOption($formData['gender'], ['Male','Female'])) {
+        $formErrors['gender'] = "Please select a valid gender.";
     }
 
-    if (empty(implode("", $formErrors))) {
-        $message = "Thank you! Your data is valid.";
-        setcookie("visitor_name", $formData['name'], time() + 3600);
-        $_SESSION['name'] = $formData['name'];
-        $_SESSION['age'] = $formData['age'];
-        $_SESSION['gender'] = $formData['gender'];
+    // If no errors, set session + cookie and mark success
+    if (empty($formErrors['name'] . $formErrors['age'] . $formErrors['gender'])) {
+        $_SESSION['visitor'] = $formData['name'];
+        setcookie('visitor_name', $formData['name'], time()+86400*30, '/');
+        $message = "Thank you, {$formData['name']}! Your inquiry has been received.";
+        $success = true;
     } else {
-        $allErrors = implode(" ", $formErrors);
-        $message = "Please fix the following errors: " . $allErrors;
+        $message = "Please fix the following errors and resubmit.";
     }
 }
 
-// Check for session termination request
-if (isset($_GET['logout']) && $_GET['logout'] == "true") {
+// Handle logout
+if (isset($_GET['logout']) && $_GET['logout']==='true') {
     session_unset();
     session_destroy();
-    $message = "Your session has been terminated.";
+    setcookie('visitor_name', '', time()-3600, '/');
+    $message = "Session ended.";
 }
 ?>
 <!DOCTYPE html>
@@ -63,10 +75,11 @@ if (isset($_GET['logout']) && $_GET['logout'] == "true") {
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+
   <!-- Header -->
   <header>
     <div class="container">
-      <img src="images/logo.png" alt="URI Sailing Team Logo" class="logo" />
+      <img src="images/logo.png" alt="URI Sailing Team Logo" class="logo">
       <nav>
         <ul>
           <li><a href="index.html">Home</a></li>
@@ -83,50 +96,76 @@ if (isset($_GET['logout']) && $_GET['logout'] == "true") {
   <!-- Main Content -->
   <main class="container">
     <h2>Contact the URI Sailing Team</h2>
+
     <!-- Static Contact Info -->
-    <p>If you have any questions, feel free to reach out.</p>
+    <p>If you have any questions, please reach out:</p>
     <p><strong>Email:</strong> <a href="mailto:sailing@uri.edu">sailing@uri.edu</a></p>
     <p><strong>Phone:</strong> (401) 874-1000</p>
 
+    <!-- Display welcome message if cookie exists -->
+    <?php if (!empty($_COOKIE['visitor_name'])): ?>
+      <p>Welcome back, <?= htmlspecialchars($_COOKIE['visitor_name']) ?>!</p>
+    <?php endif; ?>
+
+    <!-- Display sample Inquiry objects -->
+    <section>
+      <h3>Sample Visitors</h3>
+      <p>
+        <strong><?= htmlspecialchars($sample1->getName()) ?></strong>,
+        Age <?= htmlspecialchars($sample1->getAge()) ?>,
+        Gender: <?= htmlspecialchars($sample1->getGender()) ?>
+      </p>
+      <p>
+        <strong><?= htmlspecialchars($sample2->getName()) ?></strong>,
+        Age <?= htmlspecialchars($sample2->getAge()) ?>,
+        Gender: <?= htmlspecialchars($sample2->getGender()) ?>
+      </p>
+    </section>
+
     <!-- Feedback Message -->
-    <?php if (!empty($message)) : ?>
-        <p><?php echo htmlspecialchars($message); ?></p>
+    <?php if ($message): ?>
+      <div class="<?= $success ? 'success-message' : 'error-messages' ?>">
+        <p><?= htmlspecialchars($message) ?></p>
+        <?php if (!$success): ?>
+          <ul>
+            <?php foreach ($formErrors as $field => $err): ?>
+              <?php if ($err): ?>
+                <li><?= htmlspecialchars($err) ?></li>
+              <?php endif; ?>
+            <?php endforeach; ?>
+          </ul>
+        <?php endif; ?>
+      </div>
     <?php endif; ?>
 
     <!-- Contact Form -->
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-      <label for="name">Name:</label>
-      <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($formData['name']); ?>">
-      <span style="color:red;"><?php echo $formErrors['name']; ?></span><br><br>
+    <form action="contact.php" method="post" novalidate>
+      <label for="name">Name:</label><br>
+      <input type="text" id="name" name="name"
+             value="<?= htmlspecialchars($formData['name']) ?>"><br><br>
 
-      <label for="age">Age:</label>
-      <input type="number" id="age" name="age" value="<?php echo htmlspecialchars($formData['age']); ?>">
-      <span style="color:red;"><?php echo $formErrors['age']; ?></span><br><br>
+      <label for="age">Age:</label><br>
+      <input type="number" id="age" name="age"
+             value="<?= htmlspecialchars($formData['age']) ?>"><br><br>
 
-      <label>Gender:</label>
-      <input type="radio" id="male" name="gender" value="Male" <?php if($formData['gender'] == "Male") echo "checked"; ?>>
+      <label>Gender:</label><br>
+      <input type="radio" id="male" name="gender" value="Male"
+        <?= $formData['gender']==='Male' ? 'checked' : '' ?>>
       <label for="male">Male</label>
-      <input type="radio" id="female" name="gender" value="Female" <?php if($formData['gender'] == "Female") echo "checked"; ?>>
-      <label for="female">Female</label>
-      <span style="color:red;"><?php echo $formErrors['gender']; ?></span><br><br>
+      <input type="radio" id="female" name="gender" value="Female"
+        <?= $formData['gender']==='Female' ? 'checked' : '' ?>>
+      <label for="female">Female</label><br><br>
 
       <button type="submit">Submit</button>
     </form>
 
-    <!-- End Session Option -->
-    <p><a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?logout=true'); ?>">End Session</a></p>
-    
-    <!-- Display Cookie and Session Data -->
-    <?php
-      if (isset($_COOKIE['visitor_name'])) {
-          echo "<p>Welcome back, " . htmlspecialchars($_COOKIE['visitor_name']) . "!</p>";
-      }
-      if (isset($_SESSION['name'])) {
-          echo "<p>Session Data: Name: " . htmlspecialchars($_SESSION['name']) .
-               ", Age: " . htmlspecialchars($_SESSION['age']) .
-               ", Gender: " . htmlspecialchars($_SESSION['gender']) . "</p>";
-      }
-    ?>
+    <!-- End Session Link -->
+    <p><a href="contact.php?logout=true">End Session</a></p>
+
+    <!-- Display session data -->
+    <?php if (!empty($_SESSION['visitor'])): ?>
+      <p>Session visitor: <?= htmlspecialchars($_SESSION['visitor']) ?></p>
+    <?php endif; ?>
   </main>
 
   <!-- Footer -->

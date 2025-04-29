@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <title>About | URI Sailing Team</title>
   <link rel="stylesheet" href="css/style.css">
+  <script
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJ+Yf1+6lut7df6EAmX0t4masa1gqk2gkvtkI="
+    crossorigin="anonymous"></script>
+  <script src="js/aboutScripts.js"></script>
 </head>
 <body>
 
@@ -26,7 +31,7 @@
 
   <!-- Main Content -->
   <main class="container">
-    <h2>About the URI Sailing Team</h2>
+    <h2>Discover the URI Sailing Team</h2>
     <p>
       The URI Sailing Team is a competitive and close-knit group of
       student-athletes dedicated to excellence on and off the water.
@@ -41,8 +46,13 @@
       compete, and make lasting friendships within our team!
     </p>
 
-    <!-- Weather component was here in React; remove or replace with static content -->
-    <!-- You can embed a weather widget here later if needed -->
+    <!-- WEATHER WIDGET -->
+    <section id="weather" class="container" style="margin-top:2em;">
+      <h2>Current Weather at the Sailing Center</h2>
+      <div id="weather-widget">
+        <p>Loading weather data…</p>
+      </div>
+    </section>
   </main>
 
   <!-- Footer -->
@@ -55,5 +65,7 @@
     <p>&copy; 2025 URI Sailing Team. All rights reserved.</p>
   </footer>
 
+  <!-- Weather API script -->
+  <script src="js/weather.js" defer></script>
 </body>
 </html>

@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <title>Schedule | URI Sailing Team</title>
   <link rel="stylesheet" href="css/style.css">
+  <script
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJ+Yf1+6lut7df6EAmX0t4masa1gqk2gkvtkI="
+    crossorigin="anonymous"></script>
+  <script src="js/scheduleScripts.js" defer></script>
 </head>
 <body>
 
@@ -28,23 +33,21 @@
   <main>
     <section id="schedule-page" class="container">
       <h2>Full Sailing Schedule</h2>
+
+      <!-- Controls to trigger each AJAX load -->
+      <div id="ajax-controls" style="margin-bottom:1em;">
+        <button id="load-html">Load More (HTML)</button>
+        <button id="load-xml">Load More (XML)</button>
+        <button id="load-json">Load More (JSON)</button>
+        <button id="load-jq">Load via jQuery</button>
+      </div>
+
       <div id="schedule-container">
         <div class="schedule-box">
           <h3>February 15, 2025</h3>
           <p>Winter Regatta</p>
         </div>
-        <div class="schedule-box">
-          <h3>March 10, 2025</h3>
-          <p>Spring Invitational</p>
-        </div>
-        <div class="schedule-box">
-          <h3>April 5, 2025</h3>
-          <p>Championship Qualifiers</p>
-        </div>
-        <div class="schedule-box">
-          <h3>May 20, 2025</h3>
-          <p>National Championships</p>
-        </div>
+        …  
       </div>
     </section>
   </main>
