@@ -18,9 +18,12 @@ $sailors = $stmt->fetchAll();
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Meet the members of the URI Sailing Team. View sailor profiles, positions, and regatta assignments for the 2025 season.">
   <title>Roster | URI Sailing Team</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
   <!-- Header -->
