@@ -1,14 +1,23 @@
 $(document).ready(function() {
   const $container = $('#schedule-container');
 
+  function alreadyLoaded(key) {
+    return localStorage.getItem(key) === 'true';
+  }
+  function markLoaded(key) {
+    localStorage.setItem(key, 'true');
+  }
+
   // 1) HTML via XHR
   $('#load-html').one('click', function() {
+    if (alreadyLoaded('html')) return;
     $(this).prop('disabled', true);
     const xhr = new XMLHttpRequest();
     xhr.open('GET', 'data/partial-schedule.html', true);
     xhr.onload = () => {
       if (xhr.status >= 200 && xhr.status < 300) {
         $container.append(xhr.responseText);
+        markLoaded('html');
       } else {
         console.error('HTML load error:', xhr.status);
       }
@@ -19,6 +28,7 @@ $(document).ready(function() {
 
   // 2) XML via XHR
   $('#load-xml').one('click', function() {
+    if (alreadyLoaded('xml')) return;
     $(this).prop('disabled', true);
     const xhr = new XMLHttpRequest();
     xhr.open('GET', 'data/schedule.xml', true);
@@ -34,6 +44,7 @@ $(document).ready(function() {
               <p>${$e.find('name').text()}</p>
             </div>`);
         });
+        markLoaded('xml');
       } else {
         console.error('XML load error:', xhr.status);
       }
@@ -44,6 +55,7 @@ $(document).ready(function() {
 
   // 3) JSON via XHR
   $('#load-json').one('click', function() {
+    if (alreadyLoaded('json')) return;
     $(this).prop('disabled', true);
     const xhr = new XMLHttpRequest();
     xhr.open('GET', 'data/schedule.json', true);
@@ -57,6 +69,7 @@ $(document).ready(function() {
               <p>${item.name}</p>
             </div>`);
         });
+        markLoaded('json');
       } else {
         console.error('JSON load error:', xhr.status);
       }
@@ -67,14 +80,23 @@ $(document).ready(function() {
 
   // 4) HTML via jQuery
   $('#load-jq').one('click', function() {
+    if (alreadyLoaded('jq')) return;
     $(this).prop('disabled', true);
     $container.load(
       'data/partial-schedule.html .schedule-box',
       (response, status, xhr) => {
         if (status === 'error') {
           console.error('jQuery load failed:', xhr.status, xhr.statusText);
+        } else {
+          markLoaded('jq');
         }
       }
     );
   });
+
+  // Disable buttons if already loaded
+  if (alreadyLoaded('html')) $('#load-html').prop('disabled', true);
+  if (alreadyLoaded('xml')) $('#load-xml').prop('disabled', true);
+  if (alreadyLoaded('json')) $('#load-json').prop('disabled', true);
+  if (alreadyLoaded('jq')) $('#load-jq').prop('disabled', true);
 });
