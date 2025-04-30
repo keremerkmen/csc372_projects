@@ -61,9 +61,17 @@ $sailors = $stmt->fetchAll();
       <tbody>
         <?php if ($sailors): ?>
           <?php foreach ($sailors as $sailor): ?>
+            <?php
+              $imgName = strtolower($sailor['first_name']) . '.jpg';
+              $imgPath = "images/roster/$imgName";
+              // Optional: fallback if file doesn't exist
+              if (!file_exists($imgPath)) {
+                  $imgPath = "images/roster/default.jpg";
+              }
+            ?>
             <tr>
               <td>
-                <img src="images/roster/default.jpg" alt="Headshot of <?= htmlspecialchars($sailor['first_name'] . ' ' . $sailor['last_name']) ?>" class="headshot">
+                <img src="<?= $imgPath ?>" alt="Headshot of <?= htmlspecialchars($sailor['first_name'] . ' ' . $sailor['last_name']) ?>" class="headshot" width="80" height="80">
               </td>
               <td><?= htmlspecialchars($sailor['first_name'] . ' ' . $sailor['last_name']) ?></td>
               <td><?= htmlspecialchars($sailor['grade']) ?></td>
@@ -82,13 +90,13 @@ $sailors = $stmt->fetchAll();
   </main>
 
   <footer>
-  <h2>Contact Us</h2>
-  <p>Email: sailing@uri.edu</p>
-  <p>Phone: (401) 874-1000</p>
-  <p>Author: Kerem Erkmen</p>
-  <p>Email: <a href="mailto:kerem@uri.edu">kerem@uri.edu</a></p>
-  <p>&copy; 2025 URI Sailing Team. All rights reserved.</p>
-</footer>
+    <h2>Contact Us</h2>
+    <p>Email: sailing@uri.edu</p>
+    <p>Phone: (401) 874-1000</p>
+    <p>Author: Kerem Erkmen</p>
+    <p>Email: <a href="mailto:kerem@uri.edu">kerem@uri.edu</a></p>
+    <p>&copy; 2025 URI Sailing Team. All rights reserved.</p>
+  </footer>
 
 </body>
 </html>
