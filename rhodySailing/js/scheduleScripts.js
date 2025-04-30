@@ -1,26 +1,34 @@
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('schedule-container');
 
-  // Guards to prevent double-loads
-  let htmlLoaded = false,
-      xmlLoaded  = false,
-      jsonLoaded = false;
+  // Helper: create & append only if we haven't seen this event before
+  function appendIfNew(date, name) {
+    // Look for an existing .schedule-box with these data attributes
+    if (container.querySelector(`.schedule-box[data-date="${date}"][data-name="${name}"]`)) {
+      return;
+    }
+    const box = document.createElement('div');
+    box.className = 'schedule-box';
+    box.setAttribute('data-date', date);
+    box.setAttribute('data-name', name);
+    box.innerHTML = `<h3>${date}</h3><p>${name}</p>`;
+    container.appendChild(box);
+  }
 
   // 1) HTML via XHR
   document.getElementById('load-html').addEventListener('click', function() {
-    if (htmlLoaded) return;
-    htmlLoaded = true;
     this.disabled = true;
-
     const xhr = new XMLHttpRequest();
     xhr.open('GET', 'data/partial-schedule.html', true);
     xhr.onload = () => {
       if (xhr.status >= 200 && xhr.status < 300) {
-        // Extract only the .schedule-box elements
-        const wrapper = document.createElement('div');
-        wrapper.innerHTML = xhr.responseText;
-        wrapper.querySelectorAll('.schedule-box').forEach(box => {
-          container.appendChild(box);
+        // parse the returned HTML in a temp wrapper
+        const tmp = document.createElement('div');
+        tmp.innerHTML = xhr.responseText;
+        tmp.querySelectorAll('.schedule-box').forEach(el => {
+          const date = el.querySelector('h3').textContent.trim();
+          const name = el.querySelector('p').textContent.trim();
+          appendIfNew(date, name);
         });
       } else {
         console.error('HTML load error:', xhr.status);
@@ -32,10 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 2) XML via XHR
   document.getElementById('load-xml').addEventListener('click', function() {
-    if (xmlLoaded) return;
-    xmlLoaded = true;
     this.disabled = true;
-
     const xhr = new XMLHttpRequest();
     xhr.open('GET', 'data/schedule.xml', true);
     xhr.responseType = 'document';
@@ -44,12 +49,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (xhr.status >= 200 && xhr.status < 300) {
         const xml = xhr.responseXML;
         xml.querySelectorAll('event').forEach(ev => {
-          const date = ev.querySelector('date').textContent;
-          const name = ev.querySelector('name').textContent;
-          const box = document.createElement('div');
-          box.className = 'schedule-box';
-          box.innerHTML = `<h3>${date}</h3><p>${name}</p>`;
-          container.appendChild(box);
+          const date = ev.querySelector('date').textContent.trim();
+          const name = ev.querySelector('name').textContent.trim();
+          appendIfNew(date, name);
         });
       } else {
         console.error('XML load error:', xhr.status);
@@ -61,20 +63,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 3) JSON via XHR
   document.getElementById('load-json').addEventListener('click', function() {
-    if (jsonLoaded) return;
-    jsonLoaded = true;
     this.disabled = true;
-
     const xhr = new XMLHttpRequest();
     xhr.open('GET', 'data/schedule.json', true);
     xhr.responseType = 'json';
     xhr.onload = () => {
       if (xhr.status >= 200 && xhr.status < 300) {
         xhr.response.forEach(item => {
-          const box = document.createElement('div');
-          box.className = 'schedule-box';
-          box.innerHTML = `<h3>${item.date}</h3><p>${item.name}</p>`;
-          container.appendChild(box);
+          appendIfNew(item.date.trim(), item.name.trim());
         });
       } else {
         console.error('JSON load error:', xhr.status);
@@ -84,16 +80,22 @@ document.addEventListener('DOMContentLoaded', () => {
     xhr.send();
   });
 
-  // 4) HTML via jQuery (once)
+  // 4) HTML via jQuery
   $('#load-jq').one('click', function() {
     $(this).prop('disabled', true);
-    $('#schedule-container').load(
-      'data/partial-schedule.html .schedule-box',
-      (response, status, xhr) => {
-        if (status === 'error') {
-          console.error('jQuery load failed:', xhr.status, xhr.statusText);
-        }
+    // load into a temporary wrapper, not directly into container
+    const $tmp = $('<div>');
+    $tmp.load('data/partial-schedule.html .schedule-box', (resp, status, xhr) => {
+      if (status === 'error') {
+        console.error('jQuery load failed:', xhr.status, xhr.statusText);
+      } else {
+        $tmp.find('.schedule-box').each((_, el) => {
+          const $el = $(el);
+          const date = $el.find('h3').text().trim();
+          const name = $el.find('p').text().trim();
+          appendIfNew(date, name);
+        });
       }
-    );
+    });
   });
 });
