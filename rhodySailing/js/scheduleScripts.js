@@ -1,11 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('schedule-container');
 
-  // 1) HTML via XHR
-  const htmlBtn = document.getElementById('load-html');
-  htmlBtn.addEventListener('click', loadHTML, { once: true });
-  function loadHTML() {
-    htmlBtn.disabled = true;
+  // track which loads have already happened
+  const loaded = {
+    html: false,
+    xml:  false,
+    json: false,
+    jq:   false,
+  };
+
+  // 1) load HTML via XHR
+  document.getElementById('load-html').addEventListener('click', function() {
+    if (loaded.html) return;
+    loaded.html = true;
+    this.disabled = true;
+
     const xhr = new XMLHttpRequest();
     xhr.open('GET', 'data/partial-schedule.html', true);
     xhr.onload = () => {
@@ -17,21 +26,21 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     xhr.onerror = () => console.error('Network error loading HTML');
     xhr.send();
-  }
+  });
 
-  // 2) XML via XHR
-  const xmlBtn = document.getElementById('load-xml');
-  xmlBtn.addEventListener('click', loadXML, { once: true });
-  function loadXML() {
-    xmlBtn.disabled = true;
+  // 2) load XML via XHR
+  document.getElementById('load-xml').addEventListener('click', function() {
+    if (loaded.xml) return;
+    loaded.xml = true;
+    this.disabled = true;
+
     const xhr = new XMLHttpRequest();
     xhr.open('GET', 'data/schedule.xml', true);
     xhr.responseType = 'document';
     xhr.overrideMimeType('application/xml');
     xhr.onload = () => {
       if (xhr.status >= 200 && xhr.status < 300) {
-        const xml = xhr.responseXML;
-        xml.querySelectorAll('event').forEach(ev => {
+        xhr.responseXML.querySelectorAll('event').forEach(ev => {
           const date = ev.querySelector('date').textContent;
           const name = ev.querySelector('name').textContent;
           container.insertAdjacentHTML('beforeend', `
@@ -46,13 +55,14 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     xhr.onerror = () => console.error('Network error loading XML');
     xhr.send();
-  }
+  });
 
-  // 3) JSON via XHR
-  const jsonBtn = document.getElementById('load-json');
-  jsonBtn.addEventListener('click', loadJSON, { once: true });
-  function loadJSON() {
-    jsonBtn.disabled = true;
+  // 3) load JSON via XHR
+  document.getElementById('load-json').addEventListener('click', function() {
+    if (loaded.json) return;
+    loaded.json = true;
+    this.disabled = true;
+
     const xhr = new XMLHttpRequest();
     xhr.open('GET', 'data/schedule.json', true);
     xhr.responseType = 'json';
@@ -71,11 +81,14 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     xhr.onerror = () => console.error('Network error loading JSON');
     xhr.send();
-  }
+  });
 
-  // 4) HTML via jQuery (once)
-  $('#load-jq').one('click', function() {
+  // 4) load HTML via jQuery
+  $('#load-jq').on('click', function() {
+    if (loaded.jq) return;
+    loaded.jq = true;
     $(this).prop('disabled', true);
+
     $('#schedule-container').load(
       'data/partial-schedule.html .schedule-box',
       (response, status, xhr) => {
