@@ -1,85 +1,93 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const container = document.getElementById('schedule-container');
 
-  const scheduleContainer = document.getElementById('schedule-container');
-
-  // 1) Load external HTML via vanilla XHR (once)
-  document.getElementById('load-html')
-    .addEventListener('click', function onHtmlClick() {
-      console.log('🌐 load-html clicked');
-      const xhr = new XMLHttpRequest();
-      xhr.open('GET', 'data/partial-schedule.html');
-      xhr.onload = () => {
-        if (xhr.status === 200) {
-          scheduleContainer.insertAdjacentHTML('beforeend', xhr.responseText);
-        } else {
-          console.error('Failed to load HTML:', xhr.status);
-        }
-      };
-      xhr.send();
-      this.disabled = true; // prevent duplicate loads
-    }, { once: true });
-
-  // 2) Load XML via vanilla XHR
-  document.getElementById('load-xml').addEventListener('click', () => {
-    console.log('🌐 load-xml clicked');
+  // 1) Load HTML via XHR
+  function loadHTML() {
+    const btn = document.getElementById('load-html');
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', 'data/schedule.xml');
+    xhr.open('GET', 'data/partial-schedule.html', true);
+    xhr.onload = () => {
+      if (xhr.status === 200) {
+        container.insertAdjacentHTML('beforeend', xhr.responseText);
+        btn.disabled = true;
+      } else {
+        console.error('HTML load failed:', xhr.status);
+      }
+    };
+    xhr.onerror = () => console.error('Network error loading HTML');
+    xhr.send();
+  }
+  document.getElementById('load-html')
+          .addEventListener('click', loadHTML, { once: true });
+
+  // 2) Load XML via XHR
+  function loadXML() {
+    const btn = document.getElementById('load-xml');
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', 'data/schedule.xml', true);
     xhr.responseType = 'document';
     xhr.overrideMimeType('application/xml');
     xhr.onload = () => {
       if (xhr.status === 200) {
         const events = xhr.responseXML.getElementsByTagName('event');
         Array.from(events).forEach(ev => {
-          const date = ev.getElementsByTagName('date')[0].textContent;
-          const name = ev.getElementsByTagName('name')[0].textContent;
-          const html = `
+          const date = ev.querySelector('date').textContent;
+          const name = ev.querySelector('name').textContent;
+          container.insertAdjacentHTML('beforeend', `
             <div class="schedule-box">
               <h3>${date}</h3>
               <p>${name}</p>
-            </div>`;
-          scheduleContainer.insertAdjacentHTML('beforeend', html);
+            </div>`);
         });
+        btn.disabled = true;
       } else {
-        console.error('Failed to load XML:', xhr.status);
+        console.error('XML load failed:', xhr.status);
       }
     };
+    xhr.onerror = () => console.error('Network error loading XML');
     xhr.send();
-  });
+  }
+  document.getElementById('load-xml')
+          .addEventListener('click', loadXML, { once: true });
 
-  // 3) Load JSON via vanilla XHR
-  document.getElementById('load-json').addEventListener('click', () => {
-    console.log('🌐 load-json clicked');
+  // 3) Load JSON via XHR
+  function loadJSON() {
+    const btn = document.getElementById('load-json');
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', 'data/schedule.json');
+    xhr.open('GET', 'data/schedule.json', true);
     xhr.onload = () => {
       if (xhr.status === 200) {
         const list = JSON.parse(xhr.responseText);
         list.forEach(item => {
-          const html = `
+          container.insertAdjacentHTML('beforeend', `
             <div class="schedule-box">
               <h3>${item.date}</h3>
               <p>${item.name}</p>
-            </div>`;
-          scheduleContainer.insertAdjacentHTML('beforeend', html);
+            </div>`);
         });
+        btn.disabled = true;
       } else {
-        console.error('Failed to load JSON:', xhr.status);
+        console.error('JSON load failed:', xhr.status);
       }
     };
+    xhr.onerror = () => console.error('Network error loading JSON');
     xhr.send();
-  });
+  }
+  document.getElementById('load-json')
+          .addEventListener('click', loadJSON, { once: true });
 
-  // 4) Load HTML via jQuery AJAX (once)
-  $('#load-jq').one('click', () => {
-    console.log('🌐 load-jq clicked');
+  // 4) Load HTML via jQuery
+  $('#load-jq').one('click', function() {
+    const btn = this;
     $('#schedule-container').load(
       'data/partial-schedule.html .schedule-box',
       (response, status, xhr) => {
         if (status === 'error') {
           console.error('jQuery load failed:', xhr.status, xhr.statusText);
+        } else {
+          btn.disabled = true;
         }
       }
     );
   });
-
 });
