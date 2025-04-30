@@ -204,10 +204,24 @@ main {
 
   header nav ul {
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     gap: 10px;
+    width: 100%;
+    padding-left: 0;
   }
-  
+
+  header nav ul li {
+    width: 100%;
+  }
+
+  header nav ul li a {
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+    font-size: 1.1em;
+    border-bottom: 1px solid #ffffff22;
+  }
+
   .hero {
     padding: 60px 10px;
   }
@@ -269,4 +283,8 @@ main {
 
 .highlight {
   background-color: #e0f7fa;
+}
+
+footer h2 {
+  color: #ffffff;
 }

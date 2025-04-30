@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <title>Schedule | URI Sailing Team</title>
     <link rel="stylesheet" href="css/style.css">
-  
-    <!-- Corrected SRI hash: -->
     <script
       src="https://code.jquery.com/jquery-3.6.0.min.js"
       integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
@@ -32,11 +30,16 @@
     </div>
   </header>
 
-  <!-- Main Content -->
   <main>
     <section id="schedule-page" class="container">
       <h2>Full Sailing Schedule</h2>
-
+      <p>
+        The Spring 2025 season is packed with 29 regattas where the URI Sailing Team competes across the Northeast and beyond. From local fundamental events to regional qualifiers and major conference championships, our schedule reflects our team's dedication, versatility, and competitive spirit.
+      </p>
+      <p>
+        This page features dynamic loading of regatta data using HTML, XML, JSON, and jQuery formats. Use the buttons below to explore different loading techniques as well as to view more events throughout the season.
+      </p>
+  
       <!-- Controls to trigger each AJAX load -->
       <div id="ajax-controls" style="margin-bottom:1em;">
         <button id="load-html">Load More (HTML)</button>
@@ -44,15 +47,13 @@
         <button id="load-json">Load More (JSON)</button>
         <button id="load-jq">Load via jQuery</button>
       </div>
-
+  
       <div id="schedule-container">
-        <!-- Initial content can be left empty to avoid duplication -->
       </div>
     </section>
   </main>
 
-  <!-- Footer -->
-  <footer class="container">
+  <footer>
     <h2>Contact Us</h2>
     <p>Email: sailing@uri.edu</p>
     <p>Phone: (401) 874-1000</p>
