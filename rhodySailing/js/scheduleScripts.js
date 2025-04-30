@@ -7,6 +7,21 @@ $(document).ready(function() {
   function markLoaded(key) {
     localStorage.setItem(key, 'true');
   }
+  function saveContent(key, html) {
+    localStorage.setItem(key + '_content', html);
+  }
+  function getContent(key) {
+    return localStorage.getItem(key + '_content');
+  }
+
+  // Restore content if already loaded
+  ['html', 'xml', 'json', 'jq'].forEach(key => {
+    if (alreadyLoaded(key)) {
+      const html = getContent(key);
+      if (html) $container.append(html);
+      $('#' + 'load-' + key).prop('disabled', true);
+    }
+  });
 
   // 1) HTML via XHR
   $('#load-html').one('click', function() {
@@ -18,6 +33,7 @@ $(document).ready(function() {
       if (xhr.status >= 200 && xhr.status < 300) {
         $container.append(xhr.responseText);
         markLoaded('html');
+        saveContent('html', xhr.responseText);
       } else {
         console.error('HTML load error:', xhr.status);
       }
@@ -36,15 +52,18 @@ $(document).ready(function() {
     xhr.overrideMimeType('application/xml');
     xhr.onload = () => {
       if (xhr.status >= 200 && xhr.status < 300) {
+        let html = '';
         $(xhr.responseXML).find('event').each((_, ev) => {
           const $e = $(ev);
-          $container.append(`
+          html += `
             <div class="schedule-box">
               <h3>${$e.find('date').text()}</h3>
               <p>${$e.find('name').text()}</p>
-            </div>`);
+            </div>`;
         });
+        $container.append(html);
         markLoaded('xml');
+        saveContent('xml', html);
       } else {
         console.error('XML load error:', xhr.status);
       }
@@ -62,14 +81,17 @@ $(document).ready(function() {
     xhr.responseType = 'json';
     xhr.onload = () => {
       if (xhr.status >= 200 && xhr.status < 300) {
+        let html = '';
         xhr.response.forEach(item => {
-          $container.append(`
+          html += `
             <div class="schedule-box">
               <h3>${item.date}</h3>
               <p>${item.name}</p>
-            </div>`);
+            </div>`;
         });
+        $container.append(html);
         markLoaded('json');
+        saveContent('json', html);
       } else {
         console.error('JSON load error:', xhr.status);
       }
@@ -89,14 +111,9 @@ $(document).ready(function() {
           console.error('jQuery load failed:', xhr.status, xhr.statusText);
         } else {
           markLoaded('jq');
+          saveContent('jq', $container.html());
         }
       }
     );
   });
-
-  // Disable buttons if already loaded
-  if (alreadyLoaded('html')) $('#load-html').prop('disabled', true);
-  if (alreadyLoaded('xml')) $('#load-xml').prop('disabled', true);
-  if (alreadyLoaded('json')) $('#load-json').prop('disabled', true);
-  if (alreadyLoaded('jq')) $('#load-jq').prop('disabled', true);
 });
