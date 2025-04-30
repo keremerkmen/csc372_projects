@@ -285,6 +285,6 @@ main {
   background-color: #e0f7fa;
 }
 
-footer h2 {
+footer h2, footer h2 span, footer h2 strong {
   color: #ffffff !important;
 }
