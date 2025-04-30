@@ -23,7 +23,7 @@ $(document).ready(function() {
     }
   });
 
-  // 1) HTML via XHR
+  // 1) HTML via XHR (native)
   $('#load-html').one('click', function() {
     if (alreadyLoaded('html')) return;
     $(this).prop('disabled', true);
@@ -42,7 +42,7 @@ $(document).ready(function() {
     xhr.send();
   });
 
-  // 2) XML via XHR
+  // 2) XML via XHR (native)
   $('#load-xml').one('click', function() {
     if (alreadyLoaded('xml')) return;
     $(this).prop('disabled', true);
@@ -72,7 +72,7 @@ $(document).ready(function() {
     xhr.send();
   });
 
-  // 3) JSON via XHR
+  // 3) JSON via XHR (native)
   $('#load-json').one('click', function() {
     if (alreadyLoaded('json')) return;
     $(this).prop('disabled', true);
@@ -100,20 +100,16 @@ $(document).ready(function() {
     xhr.send();
   });
 
-  // 4) HTML via jQuery
+  // 4) HTML via jQuery AJAX (loads the whole HTML file)
   $('#load-jq').one('click', function() {
     if (alreadyLoaded('jq')) return;
     $(this).prop('disabled', true);
-    $container.load(
-      'data/partial-schedule.html .schedule-box',
-      (response, status, xhr) => {
-        if (status === 'error') {
-          console.error('jQuery load failed:', xhr.status, xhr.statusText);
-        } else {
-          markLoaded('jq');
-          saveContent('jq', $container.html());
-        }
-      }
-    );
+    $.get('data/partial-schedule.html', function(data) {
+      $container.append(data);
+      markLoaded('jq');
+      saveContent('jq', data);
+    }).fail(function(xhr, status, error) {
+      console.error('jQuery load failed:', xhr.status, xhr.statusText);
+    });
   });
 });
